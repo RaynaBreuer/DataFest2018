@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>Display a map</title>
+
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js"></script>
+
+    <script src="https://api.tiles.mapbox.com/mapbox.js/v3.1.1/mapbox.js"></script>
+
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css" rel="stylesheet">
+
+
+
+    <style>
+      body { margin: 0; padding: 0; }
+      #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+  </head>
+
+
+  <body>
+    <h1>Welcome Tbilisi!</h1>
+
+    <div id="map"></div>
+    <div id="distance"></div>
+
+    <script>
+      mapboxgl.accessToken = "YOUR_TOKEN";
+
+      var map = new mapboxgl.Map({
+        container: "map", // container id
+        style: "mapbox://styles/raynabreuer/cjnrive4e21g02sqg15bc9dby", // stylesheet location
+        center: [44.669,42.020], // starting position [lng, lat]
+        zoom: 6 // starting zoom
+      });
+
+      var capital = {
+        name: "Tbilisi",
+        position: L.latLng({ lat: 41.716667, lng: 44.791667 })
+      };
+
+      map.on("click", function(click) {
+        var layers = map.queryRenderedFeatures(click.point);
+
+        if (layers.length === 1) {
+          var distance = capital.position.distanceTo(click.lngLat);
+
+          console.log(distance);
+
+          document.querySelector("#distance").innerText = Math.round(distance/1000);
+        }
+
+      });
+    </script>
+
+  </body>
+</html>
